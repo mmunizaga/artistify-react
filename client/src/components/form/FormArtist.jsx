@@ -20,7 +20,23 @@ class FormArtist extends Component {
 
   api = APIHandler
 
+
+  initFormData = () => {
+    this.api
+      .get(`/artists/${this.props._id}`)
+      .then(apiRes => this.setState({
+        name: apiRes.data.name,
+        description: apiRes.data.description,
+        style: apiRes.data.style,
+        isBand: apiRes.data.isBand
+      }, ()=> console.log(apiRes)))
+      .catch(apiErr => console.error(apiErr));
+  }
+
   componentDidMount() {
+    console.log(this.props.mode)
+    console.log(this.props._id)
+    if(this.props.mode == "edit"){this.initFormData()}
     this.api
       .get("/styles")
       .then(apiRes => this.setState({styles: apiRes.data.styles}))
@@ -92,9 +108,9 @@ class FormArtist extends Component {
           <select
           name="style"
           >
-            <option value="">Please select a value.</option>
+          <option value="">Please select a value.</option>
           {this.state.styles.map((s,i) => (
-            <option key={i} value={s._id}>{s.name}</option>
+            <option key={i} value={s._id} selected={s._id===this.state.style} >{s.name}</option>
           )
           )}
           </select>
@@ -110,6 +126,7 @@ class FormArtist extends Component {
               type="radio"
               name="isBand"
               value={true}
+              checked={this.state.isBand}
             />
             <label
               className="label"
@@ -124,7 +141,7 @@ class FormArtist extends Component {
               type="radio"
               name="isBand"
               value={false}
-              checked
+              checked={!this.state.isBand}
             />
             <label
               className="label"
