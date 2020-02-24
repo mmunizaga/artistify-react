@@ -54,8 +54,9 @@ router.get("/filtered-artists", (req, res, next) => {
   res.status(200).json({ msg: "@todo" });
 });
 
-router.post("/artists", (req, res) => {
+router.post("/artists", (req, res, next) => {
   const { name, description, style, isBand } = req.body;
+  c
   artistModel
     .create({ name, description, style, isBand })
     .then(newArtist => res.status(200).json(newArtist))
