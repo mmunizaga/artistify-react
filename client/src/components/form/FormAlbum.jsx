@@ -7,6 +7,33 @@ import LabPreview from "../LabPreview";
 import "./../../styles/form.css";
 import "./../../styles/icon-avatar.css";
 
+// import React from 'react'
+
+// export default function FormAlbum({
+//   mode = "create",
+//   _id,
+//   history,
+//   match
+// }) {
+//   const [
+//     { title, artist, label, release_date, cover, description},
+//     setState
+//   ] = useState({
+//     title: "",
+//     artist: "",
+//     label: "",
+//     releaseDate: "",
+//     cover: "",
+//     description: "",
+//   });
+//   return (
+//     <div>
+      
+//     </div>
+//   )
+// }
+
+
 class FormAlbum extends Component {
   render() {
     return (
@@ -19,4 +46,4 @@ class FormAlbum extends Component {
   }
 }
 
-export default withRouter(FormAlbum);
+export default FormAlbum
