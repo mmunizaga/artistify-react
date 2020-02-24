@@ -56,7 +56,7 @@ router.get("/filtered-artists", (req, res, next) => {
 
 router.post("/artists", (req, res, next) => {
   const { name, description, style, isBand } = req.body;
-  c
+  console.log(style);
   artistModel
     .create({ name, description, style, isBand })
     .then(newArtist => res.status(200).json(newArtist))

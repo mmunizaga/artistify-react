@@ -13,7 +13,7 @@ class FormArtist extends Component {
   state = {
     name:"",
     description:"",
-    style: "",
+    style: {},
     isBand: false,
     styles:[]
   }
@@ -28,14 +28,15 @@ class FormArtist extends Component {
   }
 
   handleInputs = (e) => {
-    this.setState({[e.target.name]:e.target.value})
+    this.setState({[e.target.name]:e.target.value},
+      () => console.log(this.state))
   }
 
   handleFormSubmit = (e) => {
     e.preventDefault();
     const {name,description,style,isBand} = this.state; 
     this.api
-        .post('/artist',{name,description,style,isBand})
+        .post('/artists',{name,description,style,isBand})
         .then(dbRes => console.log(dbRes))
         .catch(apiErr => console.error(apiErr));
 
@@ -91,6 +92,7 @@ class FormArtist extends Component {
           <select
           name="style"
           >
+            <option value="">Please select a value.</option>
           {this.state.styles.map((s,i) => (
             <option key={i} value={s._id}>{s.name}</option>
           )
