@@ -57,6 +57,7 @@ router.get("/albums/:id", (req, res, next) => {
 });
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
+  
   res.status(200).json({ msg: "@todo" })
 });
 
