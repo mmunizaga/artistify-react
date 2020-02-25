@@ -1,5 +1,6 @@
 import React from "react";
 
+
 export default function List({ data, cssList = "list generic", cssItem = "item", Component }) {
 
   if (!data) return <p>Error : Component List expects an iterable "data" props</p>;

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // custom tools
-// import apiHandler from "../api/APIHandler";
+import apiHandler from "../api/APIHandler";
 import UserContext from "../auth/UserContext";
 // import Comments from "../components/comment/Comments";
 // import FormatDate from "../components/FormatDate";
@@ -10,13 +10,34 @@ import LabPreview from "../components/LabPreview";
 import "../styles/album.css";
 import "../styles/comment.css";
 import "../styles/star.css";
-
+const api = apiHandler;
 export default function Album({ match }) {
   const userContext = useContext(UserContext);
   const { currentUser } = userContext;
 
+  const [album, setAlbum] = useState(null);
+
+  useEffect(() => {
+    api
+      .get(`/albums/${match.params.id}`)
+      .then(apiRes => {
+        console.log(apiRes.data);
+        setAlbum(apiRes.data);
+      })
+      .catch(apiErr => console.log(apiErr));
+  }, []);
+
+  if (!album) return <div>TOTO</div>;
+  console.log("coucou", album.cover);
   return (
     <>
+      <>
+        <div className="title">{album.title}</div>
+        <img className="cover" src={album.cover} alt="" />
+        <div>{album.artist.style.name}</div>
+        <div>Album by {album.artist.name} published the ... by ... </div>
+      </>
+
       <h1 className="title diy">D.I.Y (Album)</h1>
       <p>
         Use the image below to code the {`<Album />`} component.
