@@ -60,10 +60,10 @@ router.get("/albums/:id", (req, res, next) => {
 });
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
-  const {name, release, rates, label} = req.body;
+  const {title, artist, label, releaseDate, cover, description} = req.body;
 
   albumModel
-    .create({name, release, rates, label})
+    .create({title, artist, label, releaseDate, cover, description})
     .then(newAlbum => res.status(200).json(newAlbum))
     .catch(next)
 });
