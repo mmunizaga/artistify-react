@@ -21,6 +21,13 @@ export default function Albums() {
 
   return (
     <React.Fragment>
+    <h1 className="title">All albums</h1>
+      <List
+        data={albums}
+        Component={CardAlbum}
+        cssList="cards"
+        cssItem="card album"
+      />
       <h1 className="title diy">D.I.Y</h1>
       <p>
         Fetch all Albums from the database.
@@ -41,16 +48,6 @@ export default function Albums() {
         user's favorites.
       </p>
 
-      <LabPreview name="albums" />
-
-      <hr />
-      <h1 className="title">All albums</h1>
-      <List
-        data={albums}
-        Component={CardAlbum}
-        cssList="cards"
-        cssItem="card album"
-      />
     </React.Fragment>
   );
 }
