@@ -49,6 +49,7 @@ router.get("/artists", async (req, res, next) => {
 router.get("/artists/:id", (req, res, next) => {
 
   artistModel.findById(req.params.id)
+  .populate("style")
   .then(artist => res.status(200).json(artist))
   .catch(next);
 });

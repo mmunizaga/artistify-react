@@ -11,7 +11,7 @@ export default function List({ data, cssList = "list generic", cssItem = "item",
           {Component && <Component data={d} />}
           {!Component && d}
         </li>
-      )) : <p>Sorry, no data yet ...</p>}
+      )) : <li className={cssItem}>Create an Artist</li>}
     </ul>
   );
 }
