@@ -61,6 +61,7 @@ router.get("/albums/:id", (req, res, next) => {
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
   const {title, artist, label, releaseDate, description} = req.body;
+  console.log(label)
   const newAlbum = {
     title,
     artist,
@@ -69,7 +70,9 @@ router.post("/albums", uploader.single("cover"), (req, res, next) => {
     description
   };
 
-  if (req.file) newAlbum.cover = req.file.secure_url;
+  if (req.file) {
+    newAlbum.cover = req.file.secure_url;
+  }
 
   albumModel
     .create(newAlbum)

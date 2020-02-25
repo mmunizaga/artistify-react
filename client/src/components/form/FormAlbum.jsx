@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment"
 // custom tools
 // import CustomInputFile from "./../icon/IconAvatarAdmin";
 import LabPreview from "../LabPreview";
@@ -6,11 +7,17 @@ import LabPreview from "../LabPreview";
 import "./../../styles/form.css";
 import "./../../styles/icon-avatar.css";
 import APIHandler from "../../api/APIHandler";
+import { withRouter } from "react-router-dom";
 
 const api = APIHandler;
 var coverInput;
 
-export default function FormAlbum({ mode = "create", _id, history, match }) {
+
+function convertDate(str) {
+  return moment(str, moment.ISO_8601).format("YYYY-MM-DD")
+}
+
+function FormAlbum({ mode = "create", _id, history, match }) {
   const [
     { title, artist, label, releaseDate, cover, coverPreviewURL, description },
     setState
@@ -25,7 +32,8 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
   });
   const [artists, setArtists] = useState([]);
   const [labels, setLabels] = useState([]);
-  const [albums, setAlbums] = useState([]);
+  const [album, setAlbum] = useState({});
+  // const _id = match.params._id
 
   const setRef = (() => {
     coverInput = React.createRef();
@@ -65,19 +73,20 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
   const handleSubmit = async e => {
     e.preventDefault();
     const fd = new FormData();
-    fd.append("tite", title);
+    fd.append("title", title);
     fd.append("artist", artist);
     fd.append("label", label);
     fd.append("releaseDate", releaseDate);
     fd.append("cover", cover);
     fd.append("description", description);
-    console.log(fd);
+
     try {
       if (mode === "create") await APIHandler.post("/albums", fd);
-      else await APIHandler.patch(`/albums/${match.params.id}`, fd);
+      else await APIHandler.patch(`/albums/${match.params._id}`, fd);
+      console.log("here", history);
+      history.push("/admin/albums");
       // here, we access history as a destructured props (see the parameters of this component)
       // history is accessible since we wrapped the component in the withRouter function
-      history.push("/admin/albums");
     } catch (apiErr) {
       console.error(apiErr);
     }
@@ -101,17 +110,21 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
       .catch(apiErr => console.log(apiErr));
   }, []);
 
-  // useEffect(() => {
-  //     function initFormData () {
-  //       api.get(`/albums/${_id}`);
-  //       delete apiRes.data._id;
-  //       setState({ ...apiRes.data});
-  //     };
-  // })
+  useEffect(() => {
+    const initFormData = () => {
+        console.log('héhooo call')
+        api.get(`/albums/${_id}`)
+        .then(apiRes => setAlbum(apiRes.data))
+        // delete apiRes.data._id;
+      };
+      if (mode === "edit") initFormData();
+  }, [mode, _id])
+
+  
+  
 
   return (
-    <div>
-      {console.log("", coverPreviewURL)}
+    album ? <div>
       <form className="form" onSubmit={handleSubmit} onChange={handleChange}>
         <label className="label" htmlFor="title">
           Title
@@ -119,8 +132,8 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
         <input
           className="input"
           type="text"
-          defaultValue={title}
           name="title"
+          defaultValue={album.title}
         />
         <label className="label" htmlFor="artist">
           Artist
@@ -129,7 +142,7 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
           <option value="">Please select a value</option>
           {artists.length
             ? artists.map((artist, i) => (
-                <option key={i} value={artist._id}>
+                <option key={i} value={artist._id} selected={artist._id===album.artist}>
                   {artist.name}
                 </option>
               ))
@@ -139,19 +152,22 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
         <label className="label" htmlFor="artist">
           Label
         </label>
-        <select name="artist">
+        <select name="label">
           <option value="">Please select a value</option>
           {labels.length &&
-            labels.map((label, i) => <option key={i}>{label.name}</option>)}
+            labels.map((label, i) => (
+              <option key={i} value={label._id} selected={label._id===album.label}>
+                {label.name}
+              </option>
+            ))}
         </select>
         <label className="lab" htmlFor="releaseDate">
           Release Date
         </label>
         <input
           className="input"
-          id="title"
           type="date"
-          defaultValue={title}
+          value={album && convertDate(album.releaseDate)}
           name="releaseDate"
         />
         <label htmlFor="cover">cover</label>
@@ -163,7 +179,7 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
           name="cover"
         />
         <img
-          src={coverPreviewURL}
+          src={album.cover || coverPreviewURL}
           onClick={simulateInputClick}
           className="icon-avatar"
           alt=""
@@ -172,9 +188,13 @@ export default function FormAlbum({ mode = "create", _id, history, match }) {
         <label className="label" htmlFor="description">
           description
         </label>
-        <textarea name="description" className="textbox" />
+        <textarea name="description" className="textbox" defaultValue={album.description} />
         <button className="btn">ok</button>
       </form>
-    </div>
+    </div> :
+    null
+    
   );
 }
+
+export default withRouter(FormAlbum);

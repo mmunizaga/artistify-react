@@ -5,6 +5,6 @@ import IconFav from "../icon/IconFavorite";
 // styles
 import "./../../styles/icon-color.css";
 
-export default function CardArtist({ data }) {
+export default function CardAlbum({ data }) {
   return <div>@todo</div>;
 }
