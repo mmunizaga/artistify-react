@@ -120,7 +120,7 @@ class FormArtist extends Component {
             htmlFor="isBand">
             is band?
           </label>
-          
+
           <div>
             <input
               type="radio"

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import apiHandler from "../api/APIHandler";
 import CardArtist from "../components/card/CardArtist";
 import List from "../components/List";
-import LabPreview from "../components/LabPreview";
+// import LabPreview from "../components/LabPreview";
 // styles
 import "../styles/card.css";
 
@@ -13,15 +13,15 @@ export default class Artists extends Component {
   };
 
   componentDidMount() {
-    apiHandler.get("/artists").then(apiRes => {
-      this.setState({ artists: apiRes.data.artists });
+    apiHandler.get("/artists")
+      .then(apiRes => {this.setState({ artists: apiRes.data.artists });
     });
   }
 
   render() {
     return (
       <React.Fragment>
-        <h1 className="title diy">D.I.Y (Artists)</h1>
+        {/* <h1 className="title diy">D.I.Y (Artists)</h1>
         <p>
           Fetch all artists from the database.
           <br />
@@ -44,7 +44,7 @@ export default class Artists extends Component {
         
         <hr />
 
-        <LabPreview name="artists"/>
+        <LabPreview name="artists"/> */}
 
         <h1 className="title">All artists</h1>
         <List

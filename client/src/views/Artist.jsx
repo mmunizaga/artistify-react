@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect} from "react";
 // custom tools
 import apiHandler from "../api/APIHandler";
-// import CardAlbum from "../components/card/CardAlbum";
+import CardAlbum from "../components/card/CardAlbum";
 // import Comments from "../components/comment/Comments";
 // import List from "../components/List";
 // import Stars from "../components/star/Stars";
 import UserContext from "./../auth/UserContext";
-import LabPreview from "../components/LabPreview";
+// import LabPreview from "../components/LabPreview";
 // styles
 import "./../styles/artist.css";
 import "./../styles/comment.css";
@@ -16,9 +16,34 @@ export default function Artists({ match }) {
   const userContext = useContext(UserContext);
   const { currentUser } = userContext;
 
+  const [artist, setArtist] = useState()
+
+  useEffect(() => {
+    apiHandler.get(`/artists/${match.params.id}`)
+    .then(apiRes => {setArtist(apiRes.data)})
+    .catch(apiErr => console.log(apiErr))
+  },[]);
+
   return (
     <>
-      <h1 className="title diy">D.I.Y (Artist)</h1>
+      {artist?
+      <>
+        <h1 className="title">{artist.name}</h1>
+        <hr></hr>
+        {console.log(artist.style)}
+        <p>Style: {artist.style.name}</p>
+        {artist.isBand? <p>Is a band</p>:<p>Is a soloist</p>}
+        <p>{artist.description}</p>
+        <br></br>
+        <h1 className="title">Discography</h1>
+        <hr></hr>
+        {console.log(CardAlbum)}
+
+        
+      </>:
+      <div>Loading ...</div>}
+
+      {/* <h1 className="title diy">D.I.Y (Artist)</h1>
       <p>
         Use the image below to code the {`<Artist />`} component.
         <br />
@@ -54,7 +79,7 @@ export default function Artists({ match }) {
         <br />
       </p>
 
-      <LabPreview name="artist"/>
+      <LabPreview name="artist"/> */}
 
      
     </>
