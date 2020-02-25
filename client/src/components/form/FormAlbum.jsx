@@ -26,6 +26,13 @@ import "./../../styles/icon-avatar.css";
 //     cover: "",
 //     description: "",
 //   });
+
+useEffect(() => {
+    function initFormData () {
+      api.get(`/albums/${_id}`);
+      delete apiRes.data._id;
+      setState({ ...apiRes.data});
+    };
 //   return (
 //     <div>
       
