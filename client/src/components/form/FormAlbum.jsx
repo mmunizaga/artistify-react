@@ -1,56 +1,88 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 // custom tools
 // import CustomInputFile from "./../icon/IconAvatarAdmin";
 import LabPreview from "../LabPreview";
 // styles
 import "./../../styles/form.css";
 import "./../../styles/icon-avatar.css";
+import APIHandler from '../../api/APIHandler'
 
-// import React from 'react'
+const api = APIHandler
 
-// export default function FormAlbum({
-//   mode = "create",
-//   _id,
-//   history,
-//   match
-// }) {
-//   const [
-//     { title, artist, label, release_date, cover, description},
-//     setState
-//   ] = useState({
-//     title: "",
-//     artist: "",
-//     label: "",
-//     releaseDate: "",
-//     cover: "",
-//     description: "",
-//   });
+import React from 'react'
 
-useEffect(() => {
-    function initFormData () {
-      api.get(`/albums/${_id}`);
-      delete apiRes.data._id;
-      setState({ ...apiRes.data});
-    };
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
+export default function FormAlbum({
+  mode = "create",
+  _id,
+  history,
+  match
+}) {
+  const [
+    { title, artist, label, releaseDate, cover, description},
+    setState
+  ] = useState({
+    title: "",
+    artist: "",
+    label: "",
+    releaseDate: "",
+    cover: "",
+    description: "",
+  });
+  const [ artists, setArtists] = useState([]);
+  const [ labels, setLabels] = useState([]);
+  const [ albums, setAlbums] = useState([]);
 
+useEffect(()=>{
+  api.get('/artists')
+  .then(apiRes => setArtists(apiRes.data))
+},[])
 
-class FormAlbum extends Component {
-  render() {
-    return (
-      <>
-        <h1 className="title diy">D.I.Y (FormAlbum)</h1>
-        <p>Code a form to Create/Update albums.</p>
-        <LabPreview name="albumForm" isSmall />
-      </>
-    );
-  }
+useEffect(()=>{
+  api.get('/labels')
+  .then(apiRes => setLabels(apiRes.data))
+},[])
+
+// useEffect(() => {
+//     function initFormData () {
+//       api.get(`/albums/${_id}`);
+//       delete apiRes.data._id;
+//       setState({ ...apiRes.data});
+//     };
+// })
+
+  return (
+    <div>
+      <form className="form" onSubmit={handleSubmit} onChange={handleChange}>
+      <label className="label" htmlFor="title">
+        Title
+      </label>
+      <input
+        className="input"
+        id="title"
+        type="text"
+        defaultValue={title}
+      />
+
+      <label className="label" htmlFor="artist">
+        Artist
+      </label>
+      <select name="artist">
+      <option value="">Please select a value</option>
+      {artists.map((artist, i) =>(
+        <option key={i}>{artist.name}</option>
+      ))}
+      </select>
+
+      <label className="label" htmlFor="artist">
+        Label
+      </label>
+      <select name="artist">
+      <option value="">Please select a value</option>
+      {labels.map((label, i) =>(
+        <option key={i}>{label.name}</option>
+      ))}
+      </select>
+    <button className="btn">ok</button>
+    </form>
+    </div>
+  )
 }
-
-export default FormAlbum
