@@ -27,7 +27,12 @@ router.get("/users/:id/favorites", async (req, res, next) => {
 });
 
 router.patch("/users/favorites/:resourceType/:id", async (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
-});
+  const user_id = req.session.passport.user
+  const resourceType = req.params.resourceType
+  const resourceId = req.params.id
+  const str = `favorites.${resourceType}`;
+  userModel.findByIdAndUpdate(user_id, { $push: { str: resourceId}})
+  {/* res.status(200).json({ msg: "@todo" }) */}
 
+})
 module.exports = router;

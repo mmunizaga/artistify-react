@@ -55,6 +55,15 @@ router.get("/albums", (req, res, next) => {
 router.get("/albums/:id", (req, res, next) => {
 
   albumModel.findById(req.params.id)
+  .populate({
+      // populate "joins" uses provided objectId references an object from an other collection
+      path: "artist", // here the associated artist document will be fetched as well
+      populate: {
+        // one can nest population
+        path: "style" // here the style document asssociated to the artist is feched as well
+      }
+    })
+    .populate("label")
   .then(album => res.status(200).json(album))
   .catch (next);
 });
