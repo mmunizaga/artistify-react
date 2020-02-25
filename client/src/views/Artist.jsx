@@ -27,20 +27,24 @@ export default function Artists({ match }) {
   return (
     <>
       {artist?
-      <>
-        <h1 className="title">{artist.name}</h1>
-        <hr></hr>
-        {console.log(artist.style)}
-        <p>Style: {artist.style.name}</p>
-        {artist.isBand? <p>Is a band</p>:<p>Is a soloist</p>}
-        <p>{artist.description}</p>
-        <br></br>
-        <h1 className="title">Discography</h1>
-        <hr></hr>
-        {console.log(CardAlbum)}
+      <div className="page">
+        <div className="description">
+          <h1 className="title">{artist.name}</h1>
+          <hr></hr>
+          <br></br>
+          <p>Style: {artist.style.name}</p>
+          {artist.isBand? <p>Is a band</p>:<p>Is a soloist</p>}
+          <p>{artist.description}</p>
+        </div>
+        <div className="discography">
+          <h1 className="title">Discography</h1>
+          <hr></hr>
+        </div>
+        
+        
 
         
-      </>:
+      </div>:
       <div>Loading ...</div>}
 
       {/* <h1 className="title diy">D.I.Y (Artist)</h1>
