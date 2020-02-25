@@ -60,18 +60,37 @@ router.get("/albums/:id", (req, res, next) => {
 });
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
-  const {title, artist, label, releaseDate, cover, description} = req.body;
+  const {title, artist, label, releaseDate, description} = req.body;
+  const newAlbum = {
+    title,
+    artist,
+    label,
+    releaseDate,
+    description
+  };
+
+  if (req.file) newAlbum.cover = req.file.secure_url;
 
   albumModel
-    .create({title, artist, label, releaseDate, cover, description})
-    .then(newAlbum => res.status(200).json(newAlbum))
+    .create(newAlbum)
+    .then(dbRes => res.status(200).json(dbRes))
     .catch(next)
 });
 
 router.patch("/albums/:id", uploader.single("cover"), (req, res, next) => {
-  albumModel.findByIdAndUpdate(req.params.id, req.body)
-    .then(updateAlbum => res.status(200).json(updateAlbum))
-    .catch(next)
+  const {title, artist, label, releaseDate, description} = req.body;
+  const updateAlbum = {
+    title,
+    artist,
+    label,
+    releaseDate,
+    description
+  }
+  if(req.file) updateAlbum.cover = req.file.secure_url;
+
+  albumModel.findByIdAndUpdate(req.params.id, updateAlbum, {new: true})
+    .then(dbRes => res.status(200).json(dbRes))
+    .catch(next);
 });
 
 router.delete("/albums/:id", (req, res, next) => {
