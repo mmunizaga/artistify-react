@@ -34,7 +34,8 @@ export default function Album({ match }) {
       <>
         <div className="title">{album.title}</div>
         <img className="cover" src={album.cover} alt="" />
-        <div>{album.artist.name}</div>
+        <div>{album.artist.style.name}</div>
+        <div>Album by {album.artist.name} published the ... by ... </div>
       </>
 
       <h1 className="title diy">D.I.Y (Album)</h1>
