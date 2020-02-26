@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect} from "react";
 // custom tools
 import apiHandler from "../api/APIHandler";
-import CardAlbum from "../components/card/CardAlbum";
+// import CardAlbum from "../components/card/CardAlbum";
 // import Comments from "../components/comment/Comments";
 // import List from "../components/List";
 // import Stars from "../components/star/Stars";
@@ -17,6 +17,7 @@ export default function Artists({ match }) {
   const { currentUser } = userContext;
 
   const [artist, setArtist] = useState()
+  const [album, setAlbum] = useState()
 
   useEffect(() => {
     apiHandler.get(`/artists/${match.params.id}`)
